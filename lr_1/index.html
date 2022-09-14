@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>1 lab - Kozlov Ivan - WEB - ICT</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "1 lab";
+        var mkdocs_page_input_path = "lr_1.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Kozlov Ivan - WEB - ICT
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">1 lab</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#1-task">1 task</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#2-task">2 task</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#3-task">3 task</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#4-task">4 task</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#5-task">5 task</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Kozlov Ivan - WEB - ICT</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>1 lab</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="welcome-to-1-lr">Welcome to 1 LR</h1>
+<ul>
+<li><code>client.py</code> - клиентская часть   </li>
+<li><code>server.py</code> - серверная часть </li>
+</ul>
+<h2 id="1-task"><strong>1 task</strong></h2>
+<ul>
+<li><code>server.py</code></li>
+</ul>
+<pre><code class="language-python">import socket
+
+conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+conn.bind((&quot;127.0.0.1&quot;, 8081))
+conn.listen(10)
+conn, addr = conn.accept()
+data_from_client = conn.recv(16384)
+udata = data_from_client.decode(&quot;utf-8&quot;)
+print(&quot;Data: &quot; + udata)
+message_to_client = b&quot;Hello, client! \n&quot;
+conn.send(message_to_client)
+conn.close()
+</code></pre>
+<ul>
+<li><code>client.py</code> </li>
+</ul>
+<pre><code class="language-python">import socket
+
+conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+conn.connect((&quot;127.0.0.1&quot;, 8081))
+print(&quot;Connect to server&quot;)
+message_to_server = b&quot;Hello, Server!&quot;
+conn.send(message_to_server)
+data_from_server = conn.recv(16384)
+print(data_from_server.decode(&quot;utf-8&quot;))
+conn.close()
+</code></pre>
+<h2 id="2-task"><strong>2 task</strong></h2>
+<ul>
+<li><code>server.py</code></li>
+</ul>
+<pre><code class="language-python">import socket
+import math
+
+conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+conn.bind((&quot;127.0.0.1&quot;, 8081))
+conn.listen(10)
+conn, addr = conn.accept()
+message_to_client = b&quot;Hello, client! \nWrite three paramets a, b, c with space:&quot;
+conn.send(message_to_client)
+data_from_client = conn.recv(16384)
+parametrs = data_from_client.decode(&quot;utf-8&quot;)
+a = float(parametrs[0])
+b = float(parametrs[2])
+c = float(parametrs[4])
+discr = b ** 2 - 4 * a * c
+if discr &gt; 0:
+    x1 = (-b + math.sqrt(discr)) / (2 * a)
+    x2 = (-b - math.sqrt(discr)) / (2 * a)
+    message_to_client = &quot;x1 = %.2f \nx2 = %.2f&quot; % (x1, x2)
+elif discr == 0:
+    x = -b / (2 * a)
+    message_to_client = &quot;x = %.2f&quot; % x
+else:
+    message_to_client = &quot;No roots&quot;
+
+conn.send(message_to_client.encode(&quot;utf-8&quot;))
+
+conn.close()
+</code></pre>
+<ul>
+<li><code>client.py</code> </li>
+</ul>
+<pre><code class="language-python">import socket
+
+conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+conn.connect((&quot;127.0.0.1&quot;, 8081))
+data_from_server = conn.recv(16384)
+print(data_from_server.decode(&quot;utf-8&quot;))
+parametrs = input()
+conn.send(parametrs.encode(&quot;utf-8&quot;))
+data_from_server = conn.recv(16384)
+print(data_from_server.decode(&quot;utf-8&quot;))
+
+conn.close()
+</code></pre>
+<h2 id="3-task"><strong>3 task</strong></h2>
+<ul>
+<li><code>server.py</code></li>
+</ul>
+<pre><code class="language-python">import socket
+
+conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+conn.bind((&quot;127.0.0.1&quot;, 8081))
+conn.listen(10)
+conn, addr = conn.accept()
+conn.recv(16384)
+response_type = &quot;HTTP/1.0 200 OK\n&quot;
+headers = &quot;Content-Type: text/html\n\n&quot;
+f = open('index.html','r')
+body = f.read()
+resp = response_type + headers + body
+conn.send(resp.encode(&quot;utf-8&quot;))
+f.close()
+conn.close()
+</code></pre>
+<ul>
+<li><code>index.html</code> - разметка страницы с текстом</li>
+</ul>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;First page&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;p&gt;Help me, please!&lt;/p&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="4-task"><strong>4 task</strong></h2>
+<ul>
+<li><code>server.py</code></li>
+</ul>
+<pre><code class="language-python">import socket
+
+conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+conn.bind((&quot;127.0.0.1&quot;, 8081))
+
+clients = []
+def send_message():
+    while True:
+        data, addr = conn.recvfrom(1024)
+        if addr not in clients:
+            clients.append(addr)
+        for i in clients:
+            if i == addr:
+                continue
+            conn.sendto(data, i)
+
+send_message()
+</code></pre>
+<ul>
+<li><code>client.py</code></li>
+</ul>
+<pre><code class="language-python">import socket
+import threading
+import datetime
+
+conn = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+conn.connect((&quot;127.0.0.1&quot;, 8081))
+
+def send_mes():
+    while True:
+        message = input()
+        conn.send(message.encode(&quot;utf-8&quot;))
+
+def get_m():
+    while True:
+        message = conn.recv(16384).decode(&quot;utf-8&quot;)
+        print(str(datetime.datetime.now()) + &quot;: &quot; + message)
+
+print(&quot;Hello! Write your message:&quot;)
+
+thread_send = threading.Thread(target=send_mes, args=())
+thread_get = threading.Thread(target=get_m, args=())
+
+thread_send.start()
+thread_get.start()
+</code></pre>
+<h2 id="5-task"><strong>5 task</strong></h2>
+<ul>
+<li><code>server.py</code></li>
+</ul>
+<pre><code class="language-python">import socket
+
+class MyHTTPServer:
+    def __init__(self, host, port):
+        self._host = host
+        self._port = port
+        self._database = []
+
+    def serve_forever(self):
+        self._conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM, proto=0)
+        self._conn.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self._conn.bind((self._host, self._port))
+        self._conn.listen(10)
+        while True:
+            client, _ = self._conn.accept()
+            self.serve_client(client)
+
+    def serve_client(self, client):
+        data = client.recv(4096).decode()
+        if not data:
+            return
+        response = self.handle_request(data)
+        client.send(response.encode())
+
+
+    def parse_request(self, data):
+        data = data.replace(&quot;\r&quot;, &quot;&quot;)
+        try:
+            req = data[:data.index(&quot;\n&quot;)]
+        except ValueError:
+            req = data
+            return req, &quot;&quot;, &quot;&quot;
+        if &quot;\n\n&quot; in data:
+            headers, body = data[data.index(&quot;\n&quot;) + 1:].split(&quot;\n\n&quot;)
+        else:
+            headers, body = data[data.index(&quot;\n&quot;) + 1:], &quot;&quot;
+        return req, headers, body
+
+
+    def parse_headers(self, headers):
+        headers_dict = {}
+        for header in headers.split('\n'):
+            if header:
+                name = header[:header.index(': ')]
+                value = header[header.index(': ') + 1:]
+                headers_dict[name] = value
+        return headers_dict
+
+
+    def parse_body(self, body):
+        body_dict = {}
+        for elem in body.split('&amp;'):
+            name = elem[:elem.index('=')]
+            value = elem[elem.index('=') + 1:].replace('+', ' ')
+            body_dict[name] = value
+        return body_dict
+
+    def handle_request(self, data):
+        req, headers, body = self.parse_request(data)
+        method, url, ver = req.split()
+        headers = self.parse_headers(headers)
+        response = f&quot;{ver} 200 OK\n\n&quot;
+        error_response = f&quot;{ver} 400\n\nBad request&quot;
+        if method == 'GET' and url == '/index':
+            with open('index.html') as f:
+                response += f.read()  
+        elif method == 'GET' and url == '/view':
+            with open('view.html') as f:
+                lines = f.readlines()
+            table = [f&quot;&lt;tr&gt;&lt;td&gt;{s}&lt;/td&gt;&lt;td&gt;{g}&lt;/td&gt;&lt;/tr&gt;&quot; for s, g in self._database]
+            response += '\n'.join(lines[:8]) + '\n'.join(table) + '\n'.join(lines[8:])
+        elif method == 'POST' and url == '/send':
+            parsed_body = self.parse_body(body)
+            self._database.append((parsed_body['subject'], parsed_body['grade']))
+            return response
+        else:
+            return error_response
+        return response
+
+    def kill(self):
+        self._conn.close()
+
+
+if __name__ == '__main__':
+    host = &quot;127.0.0.1&quot;
+    port = 8000
+    serv = MyHTTPServer(host, port)
+    try:
+        serv.serve_forever()
+    except KeyboardInterrupt:
+        serv.kill() 
+        raise KeyboardInterrupt
+
+
+</code></pre>
+<ul>
+<li><code>index.html</code></li>
+</ul>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Task 5&lt;/title&gt;
+    &lt;script&gt;
+        function submitForm() {
+            let http = new XMLHttpRequest();
+            http.open(&quot;POST&quot;, &quot;http://127.0.0.1:8000/send&quot;, true);
+            http.setRequestHeader(&quot;Content&quot;,&quot;text/html&quot;);
+            let params = &quot;grade=&quot; + document.getElementById(&quot;grade&quot;).value + &quot;&amp;subject=&quot; + document.getElementById(&quot;subject&quot;).value;
+            http.send(params);
+        }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form method=&quot;post&quot; action=&quot;#&quot; onsubmit=&quot;submitForm();return false;&quot;&gt;
+    &lt;label for=&quot;subject&quot;&gt;Предмет&lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;subject&quot; id=&quot;subject&quot;/&gt;
+    &lt;label for=&quot;grade&quot;&gt;Оценка&lt;/label&gt;
+    &lt;input type=&quot;number&quot; name=&quot;grade&quot; id=&quot;grade&quot;/&gt;
+    &lt;input type=&quot;submit&quot;&gt;
+&lt;/form&gt;
+&lt;a href=&quot;/view&quot;&gt;Посмотреть таблицу&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<ul>
+<li><code>view.html</code></li>
+</ul>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ru&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;title&gt;Task 5&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table align=&quot;center&quot; width=&quot;20%&quot; border=&quot;1&quot;&gt;
+&lt;/table&gt;
+&lt;a href=&quot;/index&quot;&gt;Вернуться ставить оценку&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
