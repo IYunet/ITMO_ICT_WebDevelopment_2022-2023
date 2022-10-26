@@ -21,14 +21,22 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'book' %}" style="color: #ffffff;">Бронирование</a>
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'book' %}" style="color: #ffffff;">Бронирование</a>
+                {% else %}
+                {% endif %} 
+                   
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'trip' %}"" style=" color: #ffffff;">Рейсы</a>
                 </li>
                 <li class="nav-item">
+                {% if user.is_authenticated %}
                     <a class="nav-link" href="{% url 'choose_passport_for_book' %}" style=" color: #ffffff;">Мои
                         бронирования</a>
+                {% else %}
+                {% endif %} 
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/review/" style="color: #ffffff;">Отзывы</a>

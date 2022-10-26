@@ -4,6 +4,7 @@ from django.contrib.auth.forms import (
     PasswordResetForm,
     SetPasswordForm,
 )
+from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.shortcuts import redirect, render
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -40,13 +41,17 @@ class Login(LoginView):
     success_url = "/"
 
 
-class Book(CreateView):
+class Book(LoginRequiredMixin, CreateView):
     model = Ticket
     fields = [
         "place_in_plane",
-        "passport_number",
         "number_flight",
     ]
+
+    def form_valid(self, form):
+        form.instance.passport_number_id = self.request.user.passport_number
+        return super().form_valid(form)
+
     template_name = "book.html"
     success_url = "/trip/"
 
@@ -65,7 +70,10 @@ def get_current_book(request, passport_user):
 def my_book(request):
     if "id_passport" in request.POST:
         passport = int(request.POST["id_passport"])
-        return redirect(f"/current_book/{passport}/")
+        if request.POST["id_passport"] == request.user.passport_number:
+            return redirect(f"/current_book/{passport}/")
+        else:
+            return redirect("/choose_passport_for_book/")
     else:
         return render(request, "templates/choose_passport_for_book.html")
 
@@ -74,8 +82,6 @@ class Update_ticket(UpdateView):
     model = Ticket
     fields = [
         "place_in_plane",
-        "passport_number",
-        "number_flight",
     ]
     template_name = "up_ticket.html"
     success_url = "/choose_passport_for_book/"
@@ -113,6 +119,8 @@ class Create_review(CreateView):
         "rate",
         "sing_author",
     ]
+
+
     template_name = "create_review.html"
     success_url = "/review/"
 

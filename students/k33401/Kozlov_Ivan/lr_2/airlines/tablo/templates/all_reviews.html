@@ -8,7 +8,10 @@
 <div class="d-flex justify-content-end ">
     <button type="button" class="btn-dark p-2 flex-grow-1">Отзывы</button>
     <a class="" href="{% url 'create_review' %}">
+        {% if user.is_authenticated %}
         <button type="button" class="btn-warning p-2 ">Написать отзыв</button>
+        {% else %}
+        {% endif %} 
     </a>
 </div>
 <div class="d-flex justify-content-center flex-grow-1">
